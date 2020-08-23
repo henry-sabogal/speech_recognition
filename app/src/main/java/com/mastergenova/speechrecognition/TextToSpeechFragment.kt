@@ -3,10 +3,14 @@ package com.mastergenova.speechrecognition
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import kotlinx.android.synthetic.main.fragment_text_to_speech.*
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +31,8 @@ class TextToSpeechFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
+    lateinit var mTTS:TextToSpeech
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,8 +45,21 @@ class TextToSpeechFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val root = inflater.inflate(R.layout.fragment_text_to_speech, container, false)
+
+        mTTS = TextToSpeech(activity, TextToSpeech.OnInitListener { status ->
+            if(status != TextToSpeech.ERROR){
+                mTTS.setLanguage(Locale("spa"))
+            }
+        })
+
+        val speakbtn = root.findViewById<View>(R.id.speakBtn) as Button
+        speakbtn.setOnClickListener{
+            mTTS.speak("Hola Mundo", TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_text_to_speech, container, false)
+        return root
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -60,6 +79,11 @@ class TextToSpeechFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mTTS.shutdown()
     }
 
     /**
