@@ -1,11 +1,16 @@
 package com.mastergenova.speechrecognition
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -28,6 +33,11 @@ class MainActivity : AppCompatActivity(), AboutFragment.OnFragmentInteractionLis
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE)
 
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            val permissions = arrayOf(Manifest.permission.RECORD_AUDIO)
+            ActivityCompat.requestPermissions(this, permissions, 0)
+        }
+
     }
 
     override fun onFragmentInteraction(uri: Uri) {
@@ -44,4 +54,5 @@ class MainActivity : AppCompatActivity(), AboutFragment.OnFragmentInteractionLis
             System.out.println("Instalado TTS")
         }
     }
+
 }

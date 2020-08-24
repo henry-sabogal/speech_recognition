@@ -5,10 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".SpeechToTextFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Speech" />
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/textSpoken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Speech" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/speechBtn"
+            android:text="Speak, please"
+            />
+
+    </LinearLayout>
+
+
 
 </FrameLayout>

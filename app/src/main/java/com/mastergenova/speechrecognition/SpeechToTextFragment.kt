@@ -1,12 +1,24 @@
 package com.mastergenova.speechrecognition
 
+import android.app.Activity
+import android.app.Instrumentation
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +38,9 @@ class SpeechToTextFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
+    lateinit var speechRecognizer:SpeechRecognizer
+    lateinit var et_text:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,8 +51,29 @@ class SpeechToTextFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        val root = inflater.inflate(R.layout.fragment_speech_to_text, container, false)
+
+        et_text = root.findViewById<View>(R.id.textSpoken) as TextView
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
+
+        val speakBtn = root.findViewById<View>(R.id.speechBtn) as Button
+        speakBtn.setOnClickListener{
+            val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale("spa"))
+            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now!")
+            try {
+                startActivityForResult(speechRecognizerIntent, REQUEST_CODE_STT)
+            }catch (e: ActivityNotFoundException){
+                e.printStackTrace()
+                Toast.makeText(activity, "Your device does not support STT", Toast.LENGTH_LONG).show()
+            }
+        }
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_speech_to_text, container, false)
+        return root
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -57,6 +93,21 @@ class SpeechToTextFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            REQUEST_CODE_STT -> {
+                if(resultCode == Activity.RESULT_OK && data != null){
+                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    if(!result.isNullOrEmpty()){
+                        val recognizedText = result[0]
+                        et_text.setText(recognizedText)
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -92,5 +143,7 @@ class SpeechToTextFragment : Fragment() {
                         putString(ARG_PARAM2, param2)
                     }
                 }
+
+        private const val REQUEST_CODE_STT = 1
     }
 }
