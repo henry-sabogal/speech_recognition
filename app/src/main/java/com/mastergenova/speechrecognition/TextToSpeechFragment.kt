@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import com.google.mlkit.nl.languageid.LanguageIdentification
-import kotlinx.android.synthetic.main.fragment_text_to_speech.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,6 +32,8 @@ class TextToSpeechFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     lateinit var mTTS:TextToSpeech
+    lateinit var tvLanguage:TextView
+    lateinit var tvError:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +55,18 @@ class TextToSpeechFragment : Fragment() {
             }
         })
 
-        val speakbtn = root.findViewById<View>(R.id.speakBtn) as Button
+        val editText = root.findViewById<View>(R.id.textWritten) as EditText
+        tvError = root.findViewById<View>(R.id.tvError) as TextView
+        tvLanguage = root.findViewById<View>(R.id.tvLanguage) as TextView
+        val speakbtn = root.findViewById<View>(R.id.speakBtn) as ImageButton
         speakbtn.setOnClickListener{
-            mTTS.speak("Hola Mundo", TextToSpeech.QUEUE_FLUSH, null, null)
-            languageIdentifier("si è verificato un errore")
+            if(editText.text.toString().trim().length>0){
+                tvError.visibility = View.INVISIBLE
+                languageIdentifier(editText.text.toString())
+            }else{
+                tvError.visibility = View.VISIBLE
+                tvError.text = "Please, introduce a text"
+            }
         }
 
         // Inflate the layout for this fragment
@@ -76,13 +84,32 @@ class TextToSpeechFragment : Fragment() {
             .addOnSuccessListener { languageCode ->
                 if(languageCode == "und"){
                     Toast.makeText(activity, "Can't identify language", Toast.LENGTH_LONG).show()
+                    tvError.visibility = View.VISIBLE
+                    tvError.text = "Can't identify language"
                 }else{
+                    tvError.visibility = View.INVISIBLE
                     Toast.makeText(activity, "Language: $languageCode", Toast.LENGTH_LONG).show()
+                    tvLanguage.text = "Language: $languageCode"
+                    speak(text, languageCode)
                 }
+
             }
             .addOnFailureListener{
                 Toast.makeText(activity, "An error occurred", Toast.LENGTH_LONG).show()
+                tvError.visibility = View.VISIBLE
+                tvError.text = "An error occurred"
             }
+    }
+
+    fun speak(text: String, language: String){
+        mTTS = TextToSpeech(activity, TextToSpeech.OnInitListener { status ->
+            if(status != TextToSpeech.ERROR){
+                mTTS.setLanguage(Locale(language))
+                mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+            }else{
+                Toast.makeText(activity, "An error occurred ${TextToSpeech.ERROR.toString()}", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onAttach(context: Context) {

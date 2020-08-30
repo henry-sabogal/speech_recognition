@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,8 +19,9 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:id="@+id/text"
+            android:id="@+id/textWritten"
             android:hint="@string/introduce_text"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_marginTop="20dp"/>
 
         <TextView
@@ -30,14 +32,32 @@
             android:text="@string/error_text"
             android:layout_marginTop="20dp"
             android:textSize="12dp"
+            android:visibility="invisible"
             />
 
-        <Button
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/speakBtn"
-            android:text="Speak"
-            />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/speakBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/colorWhite"
+                android:background="@color/colorSecundary"
+                android:src="@drawable/baseline_volume_mute_white_48" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/tvLanguage"
+                android:text="English"
+                android:layout_marginLeft="10dp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 
