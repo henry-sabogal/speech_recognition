@@ -6,5 +6,6 @@
     <string name="about">About</string>
     <string name="text_to_speech">Text</string>
     <string name="speech_to_text">Speech</string>
-
+    <string name="introduce_text">Introduce a text</string>
+    <string name="error_text">Please introduce a text</string>
 </resources>

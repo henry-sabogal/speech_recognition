@@ -26,9 +26,12 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_gravity="bottom"
+       android:background="@color/colorSecundary"
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
        app:layout_constraintStart_toStartOf="parent"
+       app:itemTextColor="@drawable/tab_color"
+       app:itemIconTint="@drawable/tab_color"
        app:menu="@menu/bottom_navigation_menu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

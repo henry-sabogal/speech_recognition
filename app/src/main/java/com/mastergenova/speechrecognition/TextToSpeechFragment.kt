@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import com.google.mlkit.nl.languageid.LanguageIdentification
 import kotlinx.android.synthetic.main.fragment_text_to_speech.*
 import java.util.*
 
@@ -56,6 +58,7 @@ class TextToSpeechFragment : Fragment() {
         val speakbtn = root.findViewById<View>(R.id.speakBtn) as Button
         speakbtn.setOnClickListener{
             mTTS.speak("Hola Mundo", TextToSpeech.QUEUE_FLUSH, null, null)
+            languageIdentifier("si è verificato un errore")
         }
 
         // Inflate the layout for this fragment
@@ -65,6 +68,21 @@ class TextToSpeechFragment : Fragment() {
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
+    }
+
+    fun languageIdentifier(text: String){
+        val languageIdentifier = LanguageIdentification.getClient()
+        languageIdentifier.identifyLanguage(text)
+            .addOnSuccessListener { languageCode ->
+                if(languageCode == "und"){
+                    Toast.makeText(activity, "Can't identify language", Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(activity, "Language: $languageCode", Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnFailureListener{
+                Toast.makeText(activity, "An error occurred", Toast.LENGTH_LONG).show()
+            }
     }
 
     override fun onAttach(context: Context) {

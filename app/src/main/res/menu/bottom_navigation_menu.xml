@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/aboutFragment"
+        android:icon="@drawable/baseline_info_white_24"
         android:title="@string/about" />
     <item
         android:id="@+id/textToSpeechFragment"
+        android:icon="@drawable/baseline_volume_mute_white_24"
         android:title="@string/text_to_speech" />
 
     <item
         android:id="@+id/speechToTextFragment"
+        android:icon="@drawable/baseline_settings_voice_white_24"
         android:title="@string/speech_to_text" />
 </menu>
