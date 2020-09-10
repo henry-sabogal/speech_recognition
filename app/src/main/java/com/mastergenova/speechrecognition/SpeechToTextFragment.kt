@@ -13,9 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.os.bundleOf
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,6 +38,7 @@ class SpeechToTextFragment : Fragment() {
 
     lateinit var speechRecognizer:SpeechRecognizer
     lateinit var et_text:TextView
+    var selectedLanguage:String = "en"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +56,23 @@ class SpeechToTextFragment : Fragment() {
         et_text = root.findViewById<View>(R.id.textSpoken) as TextView
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
 
-        val speakBtn = root.findViewById<View>(R.id.speechBtn) as Button
+        val radioGroup = root.findViewById<View>(R.id.radio_group) as RadioGroup
+
+        radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener{ group, checkedId ->
+            var radio:RadioButton = root.findViewById(checkedId)
+            when (radio.text){
+                "English" -> selectedLanguage = "en"
+                "Spanish" -> selectedLanguage = "es"
+                "Italian" -> selectedLanguage = "it"
+            }
+            System.out.println(selectedLanguage)
+        })
+
+        val speakBtn = root.findViewById<View>(R.id.speechBtn) as ImageButton
         speakBtn.setOnClickListener{
             val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale("spa"))
+            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale(selectedLanguage).toString())
             speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now!")
             try {
                 startActivityForResult(speechRecognizerIntent, REQUEST_CODE_STT)

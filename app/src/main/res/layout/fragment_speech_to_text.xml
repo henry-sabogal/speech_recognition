@@ -12,18 +12,75 @@
         android:orientation="vertical">
 
         <!-- TODO: Update blank fragment layout -->
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_language"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/english"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/english"
+                android:checked="true"
+                 />
+
+            <RadioButton
+                android:id="@+id/spanish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/spanish"
+                 />
+
+            <RadioButton
+                android:id="@+id/italian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/italian"
+                 />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/speechBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/colorWhite"
+                android:background="@color/colorSecundary"
+                android:src="@drawable/baseline_settings_voice_white_48" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/press_to_speech"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textSpoken"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Speech" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/speechBtn"
-            android:text="Speak, please"
+            android:layout_height="200dp"
+            style="@style/Widget.AppCompat.EditText"
+            android:gravity="start|top"
+            android:layout_marginTop="10dp"
             />
+
 
     </LinearLayout>
 
