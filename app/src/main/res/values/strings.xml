@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpeechRecognition</string>
+    <string name="app_name">Speech Recognition</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -13,4 +13,19 @@
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
     <string name="italian">Italian</string>
+    <string name="about_first">
+        This app allows user to convert text to speech and speech to text.
+        The app uses the TextToSpeech class and the SpeechRecognizer class.
+        Both of them provide for Android.
+        Also, the app uses the ML Kit language identification API for Android.
+    </string>
+    <string name="about_second">
+        In the first section, the user can introduce a text, then, the user press a button and the app converts the text into voice.
+        The app can recognize the language of the text.
+        The app has been tested for English, Spanish, and Italian languages.
+    </string>
+    <string name="about_third">
+        In the second section, the user can select between three different languages: English, Spanish, and Italian.
+        Then, the user press a button to open a window where the user can speak, and the app converts the voice into text.
+    </string>
 </resources>
